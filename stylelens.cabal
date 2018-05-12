@@ -21,3 +21,7 @@ executable stylelens
                      , text
                      , bytestring
                      , aeson
+                     , lens-aeson
+                     , unordered-containers
+                     , vector
+                     , lens
