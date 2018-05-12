@@ -28,4 +28,3 @@ main = do
       Right x -> return x
 
   print d
-  putStrLn "hello world"

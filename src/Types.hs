@@ -1,9 +1,7 @@
 {-# LANGUAGE OverloadedStrings,
              DeriveGeneric,
-             DeriveAnyClass,
              RecordWildCards,
-             TemplateHaskell,
-             ScopedTypeVariables #-}
+             TemplateHaskell #-}
 module Types where
 
 import qualified Data.Text    as T
