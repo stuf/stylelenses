@@ -1,8 +1,14 @@
-{-# LANGUAGE OverloadedStrings, DeriveGeneric, DeriveAnyClass, RecordWildCards, TemplateHaskell #-}
+{-# LANGUAGE OverloadedStrings,
+             DeriveGeneric,
+             DeriveAnyClass,
+             RecordWildCards,
+             TemplateHaskell,
+             ScopedTypeVariables #-}
 module Types where
 
 import qualified Data.Text    as T
 import           GHC.Generics
+import           Control.Monad
 import           Control.Lens
 import           Data.Aeson
 import           Data.Aeson.Lens
@@ -10,32 +16,27 @@ import           Data.Aeson.Lens
 --
 
 data Style =
-  Style { name :: T.Text
-        , font :: T.Text
-        , size :: Float
-        , alignment :: Float
-        , color :: (Float, Float, Float, Float)
-        } deriving (Show, Generic, ToJSON, FromJSON)
+  Style { _name :: T.Text
+        , _font :: T.Text
+        } deriving (Show, Generic)
+
+instance FromJSON Style where
+  parseJSON = withObject "style" $ \o -> do
+    _name <- o .: "name"
+    _font <- o .: "font"
+    return Style{..}
+
+makeLenses ''Style
 
 --
 
-newtype Styles =
-  Styles { styles :: [Style]
-         } deriving (Show, Generic, ToJSON, FromJSON)
+data Styles =
+  Styles { _styles :: [Style]
+         } deriving (Show, Generic)
 
-newtype Styles' =
-  Styles' { _styles :: [Style]
-          } deriving (Show, Generic)
-
-instance FromJSON Styles' where
+instance FromJSON Styles where
   parseJSON = withObject "styles" $ \o -> do
-    styles <- o .: "styles"
-    return Styles'{..}
+    _styles <- o .: "styles"
+    return Styles{..}
 
-data Foo =
-  Foo { _bar :: Float
-      , _top :: T.Text
-      , _kek :: T.Text
-      } deriving (Show, Generic)
-
-makeLenses ''Foo
+makeLenses ''Styles
